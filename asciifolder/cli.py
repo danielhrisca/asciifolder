@@ -23,9 +23,8 @@ def folder2ascii(path, prefix=''):
         list of strings that compose the folder structure as text
         
     """
-    lines = []
     name = os.path.basename(path)
-    lines.append('{}{}/'.format(prefix, name))
+    yield '{}{}/'.format(prefix, name)
 
     items = list(os.listdir(path))
 
@@ -67,12 +66,10 @@ def folder2ascii(path, prefix=''):
             else:
                 prefix_ = clean_prefix + '├── '
 
-            lines.extend(
-                folder2ascii(
+            for line in folder2ascii(
                     os.path.join(path, folder), 
-                    prefix_,
-                )
-            )
+                    prefix_):
+                yield line
             cntr += 1
 
         for file in files:
@@ -80,15 +77,14 @@ def folder2ascii(path, prefix=''):
                 prefix_ = clean_prefix + '└── '
             else:
                 prefix_ = clean_prefix + '├── '
-            lines.append('{}{}'.format(prefix_, file))
+            yield '{}{}'.format(prefix_, file)
 
             cntr += 1
-
-    return lines
+            
 
 def main(path):
-    print(*folder2ascii(path), sep='\n')
+    for line in folder2ascii(path):
+        print(line)
 
 if __name__ == '__main__':
-    #main(sys.argv[1])
-    main(r'd:\WinPython-64bit-3.6.4.0Qt5b5\python-3.6.4.amd64\Lib\concurrent')
+    main(sys.argv[1])
