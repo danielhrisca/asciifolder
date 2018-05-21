@@ -1,6 +1,13 @@
 ## asciifolder
 pretty print folder structure to cli
 
+### Install
+```
+pip install asciifolder
+```
+
+### Usage
+
 ```python
 >>> asciifolder "Python/Lib/concurent"
 
@@ -19,4 +26,11 @@ concurrent/
 │   ├── process.py
 │   └── thread.py
 └── __init__.py
+```
+
+```python
+from asciifolder import folde2ascii
+
+for line in folder2ascii(path):
+    print(line)
 ```
