@@ -4,27 +4,30 @@ from __future__ import print_function
 import os
 import sys
 
+from colorama import Fore, init
 from natsort import natsorted
+
+init()
 
 
 def folder2ascii(path, prefix=''):
     """ converts folder structure to list of strings
-    
+
     Parameters
     ----------
     path : str
         root folder
     prefix : str
         prefix for current subfolder; default is empty str for the root folder
-        
+
     Returns
     -------
     lines : list
         list of strings that compose the folder structure as text
-        
+
     """
     name = os.path.basename(path)
-    yield '{}{}/'.format(prefix, name)
+    yield '{}{}{}{}/'.format(prefix, Fore.GREEN, name, Fore.RESET)
 
     items = list(os.listdir(path))
 
@@ -67,7 +70,7 @@ def folder2ascii(path, prefix=''):
                 prefix_ = clean_prefix + '├── '
 
             for line in folder2ascii(
-                    os.path.join(path, folder), 
+                    os.path.join(path, folder),
                     prefix_):
                 yield line
             cntr += 1
@@ -80,11 +83,12 @@ def folder2ascii(path, prefix=''):
             yield '{}{}'.format(prefix_, file)
 
             cntr += 1
-            
+
 
 def main(path):
     for line in folder2ascii(path):
         print(line)
+
 
 if __name__ == '__main__':
     main(sys.argv[1])
